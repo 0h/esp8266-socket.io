@@ -1,0 +1,12 @@
+{
+  "name": "esp8266-socket-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/0h/esp8266-socket",
+  "author": "halil bayrakci",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.2",
+    "socket.io": "^2.0.4"
+  }
+}

@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+</head>
+
+<body>
+  <div id="future"></div>
+  <form id="form" id="chat_form">
+    <input type="submit" value="reset">
+  </form>
+  <script src="/jquery/dist/jquery.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+</body>
+
+</html>
+
+<script>
+  var socket = io.connect();
+  socket.on('connect', function (data) {
+    socket.emit('join', 'Hello World from client');
+  });
+  socket.on('broad', function (data) {
+    $('#future').append(data + "<br/>");
+  });
+  $('form').submit(function (e) {
+    e.preventDefault();
+    socket.emit('messages', 'reset');
+  });
+</script>

@@ -1,42 +1,59 @@
 #include <Arduino.h>
-
 #include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
-
 #include <SocketIoClient.h>
 
-#define USE_SERIAL Serial
+const char* ssid = "SSID";
+const char* password = "PASSWORD";
 
-ESP8266WiFiMulti WiFiMulti;
+const char* socketServer = "SERVER_ID";
+const int socketPort = 4200;
+
 SocketIoClient socket;
 
 void event(const char * payload, size_t length) {
-  USE_SERIAL.printf("got message: %s\n", payload);
+  Serial.printf("got message: %s\n", payload);
+}
+
+void connect(const char * payload, size_t length) {
+  socket.emit("join", "Hello from IOT");
+}
+
+void broad(const char * payload, size_t length) {
+  Serial.printf("reset broad message received %s", payload);
+  digitalWrite(LED_BUILTIN, LOW);
+  delay(1000);
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void setup() {
-    USE_SERIAL.begin(115200);
+  Serial.begin(115200);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 
-    USE_SERIAL.setDebugOutput(true);
+  Serial.setDebugOutput(true);
 
-    USE_SERIAL.println();
-    USE_SERIAL.println();
-    USE_SERIAL.println();
+  Serial.println();
+  Serial.println();
+  Serial.println();
 
-      for(uint8_t t = 4; t > 0; t--) {
-          USE_SERIAL.printf("[SETUP] BOOT WAIT %d...\n", t);
-          USE_SERIAL.flush();
-          delay(1000);
-      }
+  for(uint8_t t = 4; t > 0; t--) {
+    Serial.printf("[SETUP] BOOT WAIT %d...\n", t);
+    Serial.flush();
+    delay(1000);
+  }
 
-    WiFiMulti.addAP("SSID", "PASSWORD");
+  WiFi.mode(WIFI_STA);
+  WiFi.begin(ssid, password);
 
-    while(WiFiMulti.run() != WL_CONNECTED) {
-        delay(100);
-    }
+  while(WiFi.status() != WL_CONNECTED) {
+    delay(100);
+    Serial.print(".");
+  }
 
-    socket.on("event", event);
-    socket.begin("localhost", 3000);
+  socket.on("event", event);
+  socket.begin(socketServer, socketPort);
+  socket.on("connect", connect);
+  socket.on("broad", broad);
 }
 
 void loop() {

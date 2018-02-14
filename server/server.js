@@ -19,6 +19,10 @@ io.on('connection', function (client) {
     io.emit('broad', data);
     console.log(data);
   });
+
+  client.on('disconnect', function () {
+    console.log('Client disconnected!');
+  });
 });
 
 server.listen(4200, () => {

@@ -7,7 +7,7 @@
 
 <body>
   <div id="future"></div>
-  <form id="form" id="chat_form">
+  <form id="form">
     <input type="submit" value="reset">
   </form>
   <script src="/jquery/dist/jquery.js"></script>
@@ -19,7 +19,7 @@
 <script>
   var socket = io.connect();
   socket.on('connect', function (data) {
-    socket.emit('join', 'Hello World from client');
+    socket.emit('join', 'Browser connected');
   });
   socket.on('broad', function (data) {
     $('#future').append(data + "<br/>");

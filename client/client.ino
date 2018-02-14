@@ -18,16 +18,16 @@ void event(const char *payload, size_t length)
 void IOTbroad(const char *payload, size_t length)
 {
   Serial.printf("Broadcasting message: %s\n", payload);
-  digitalWrite(4, LOW);
+  digitalWrite(LED_BUILTIN, LOW);
   delay(1000);
-  digitalWrite(4, HIGH);
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void setup()
 {
   Serial.begin(115200);
-  pinMode(4, OUTPUT);
-  digitalWrite(4, HIGH);
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 
   Serial.setDebugOutput(true);
 

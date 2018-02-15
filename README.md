@@ -7,5 +7,7 @@ Used [timum-viw/socket.io-client](https://github.com/timum-viw/socket.io-client)
 ## server-side installation
 
 run inside server directory
-
-`yarn install`
+```bash
+yarn install
+yarn start
+```
